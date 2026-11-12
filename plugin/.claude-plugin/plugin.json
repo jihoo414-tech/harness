@@ -1,0 +1,5 @@
+{
+  "name": "my-harness",
+  "version": "0.1.0",
+  "description": "My personal dev harness: skills tuned for human-driven TDD with mid-loop refactoring."
+}

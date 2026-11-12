@@ -1,0 +1,11 @@
+{
+  "name": "my-harness",
+  "owner": { "name": "jihoo414-tech" },
+  "plugins": [
+    {
+      "name": "my-harness",
+      "source": "./plugin",
+      "description": "My personal dev harness."
+    }
+  ]
+}

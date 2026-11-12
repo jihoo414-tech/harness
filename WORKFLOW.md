@@ -9,11 +9,11 @@
 | 새 프로젝트 첫 설정 | `/setup-matt-pocock-skills` → `/setup-pre-commit` → `/git-guardrails-claude-code` |
 | 기능 설계 다듬기 | `/grill-with-docs` (작은 일이면 `/grill-me`, 그보다 작으면 생략) |
 | 설계가 맞는지 손으로 확인 | `/prototype` |
-| 구현 | `/tdd` |
+| 구현 | `/my-harness:tdd` |
 | 큰 리팩터링 직전 | `/pstack:blast-radius` |
 | 커밋 직전 | `/ponytail-review` |
 | PR | `/pr` |
-| 버그 | `/diagnosing-bugs` → `/tdd` |
+| 버그 | `/diagnosing-bugs` → `/my-harness:tdd` |
 | 세션 하나로 안 끝나는 작업 | `/to-spec` → `/to-tickets` |
 | 뭘 정해야 할지 흐릿한 큰 작업 | `/wayfinder` → `/to-spec` → `/to-tickets` |
 | 구조 점검 (몇 주에 한 번) | `/improve-codebase-architecture`, `/ponytail-audit` |
@@ -34,14 +34,14 @@ Ponytail 모드는 세션 시작 훅으로 항상 켜져 있다. 필요한 최�
 ## 1. 기능 하나 만들기 (기본 루프)
 
 ```
-/grill-with-docs ─▶ /tdd ─┬─ seam 합의 (내가 확인)
-                          ├─ red → green  (한 slice씩)
-                          └─ 리팩터링     (green일 때, 내가 요청할 때)
+/grill-with-docs ─▶ /my-harness:tdd ─┬─ seam 합의 (내가 확인)
+                                     ├─ red → green  (한 slice씩)
+                                     └─ 리팩터링     (green일 때, 내가 요청할 때)
                      ─▶ /ponytail-review ─▶ 커밋 ─▶ /pr
 ```
 
 1. 설계 다듬기. `/grill-with-docs`가 질문을 퍼붓는다. 답하는 동안 용어와 결정이 문서에 남는다. 설계가 맞는지 확신이 없으면 `/prototype`으로 버릴 시제품을 만들어 확인한다.
-2. seam 합의. `/tdd`는 테스트를 쓰기 전에 어느 공개 인터페이스에 테스트를 걸지 묻는다. 여기서 승인하거나 고친다. 인터페이스 모양 자체가 고민이면 `codebase-design`의 용어(deep module, seam, adapter)로 이야기한다.
+2. seam 합의. `/my-harness:tdd`는 테스트를 쓰기 전에 어느 공개 인터페이스에 테스트를 걸지 묻는다. 여기서 승인하거나 고친다. 인터페이스 모양 자체가 고민이면 `codebase-design`의 용어(deep module, seam, adapter)로 이야기한다.
 3. red → green. 테스트 하나, 통과시킬 최소 구현 하나. 한 번에 한 slice만 한다. 매 사이클 diff를 직접 본다.
 4. 리팩터링. green 상태에서 "리팩터링하자"라고 말한다. 테스트는 계속 통과해야 하고 assertion은 바꾸지 않는다. 리팩터링 중 테스트가 깨지면 테스트가 구현에 묶여 있었다는 신호다. 범위가 diff를 넘어가면 먼저 `/pstack:blast-radius`로 영향 범위를 확인한다.
 5. 3~4를 반복한다.
@@ -73,7 +73,7 @@ wayfinder 티켓은 답이 나오면 닫히고, to-tickets 티켓은 코드가 �
 ## 3. 버그
 
 1. `/diagnosing-bugs`: 재현 → 가설 → 원인 확인 루프. 성능 회귀도 이걸로 본다.
-2. 원인을 찾으면 `/tdd`로 실패하는 회귀 테스트를 먼저 쓰고 고친다.
+2. 원인을 찾으면 `/my-harness:tdd`로 실패하는 회귀 테스트를 먼저 쓰고 고친다.
 3. 1번 루프의 6~7단계로 마무리한다.
 
 ## 4. 리팩터링 크기별
@@ -99,6 +99,25 @@ wayfinder 티켓은 답이 나오면 닫히고, to-tickets 티켓은 코드가 �
 
 `/implement`, `/implement-spec`, `/chief-of-staff`, `/claude-handoff`, `software-factory`, `/pstack:poteto-mode`, `/pstack:arena`, `/pstack:swarm`. 모두 여러 단계를 에이전트에게 통째로 맡기는 도구다. 반복되고 지루한 작업이 생기면 `/implement`부터 시험해 본다.
 
-## 로컬 수정 사항
+## 레포 구조
 
-- `.claude/skills/tdd/SKILL.md`: 원본은 리팩터링을 리뷰 단계로 미룬다. green일 때 내가 요청하면 리팩터링하도록 바꿨다. 원본 스킬을 업데이트하면 이 수정이 덮어써질 수 있다.
+```
+.claude/        이 레포에서 작업할 때 쓰는 하네스. 외부 스킬(Matt, ponytail)은 원본 그대로 둔다.
+plugin/         내 하네스(my-harness 플러그인). 내가 만들거나 고친 스킬은 여기에 둔다.
+.claude-plugin/ plugin/을 가리키는 로컬 마켓플레이스.
+experiments/    실험 하나 = 폴더 하나. 그 폴더에서 claude를 실행한다. 필요할 때 만든다.
+```
+
+실험은 `experiments/`에서 하고, 잘 되면 `plugin/`으로 올린다.
+
+다른 프로젝트에 설치하기:
+
+```
+/plugin marketplace add C:/Users/sksms/Desktop/ai/harness
+/plugin install my-harness@my-harness
+```
+
+## 내가 고친 스킬
+
+- `plugin/skills/tdd` (`/my-harness:tdd`): Matt의 `tdd`는 리팩터링을 리뷰 단계로 미룬다. 내 버전은 green일 때 내가 요청하면 리팩터링한다. `.claude/skills/tdd`에는 원본이 그대로 있다.
+- 내 `tdd`는 `codebase-design`과 `code-review` 스킬을 부른다. 다른 프로젝트에서는 Matt 스킬도 함께 설치해야 한다.
