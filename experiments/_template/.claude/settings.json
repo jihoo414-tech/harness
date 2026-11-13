@@ -1,0 +1,54 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(~/harness-katas/**)",
+      "Edit(~/harness-katas/**)",
+      "Bash(*harness-katas*)"
+    ]
+  },
+  "extraKnownMarketplaces": {
+    "cursor-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "cursor/plugins"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "pstack@cursor-plugins": true
+  },
+  "skillOverrides": {
+    "hiring-prep-coding-test": "off",
+    "hiring-prep-doc-feedback": "off",
+    "hiring-prep-interview": "off",
+    "hiring-sim-coding-test": "off",
+    "hiring-sim-interview": "off",
+    "hiring-sim-pipeline": "off",
+    "hiring-sim-portfolio-redteam": "off",
+    "hiring-sim-portfolio-review": "off",
+    "hiring-sim-resume-redteam": "off",
+    "hiring-sim-resume-review": "off",
+    "kevin-feedback": "off",
+    "portfolio-build": "off",
+    "graphify": "name-only",
+    "implement": "off",
+    "implement-spec": "off",
+    "chief-of-staff": "off",
+    "claude-handoff": "off",
+    "software-factory": "off",
+    "migrate-to-shoehorn": "off",
+    "scaffold-exercises": "off",
+    "writing-beats": "off",
+    "writing-fragments": "off",
+    "writing-shape": "off",
+    "to-questionnaire": "off",
+    "loop-me": "off",
+    "teach": "off",
+    "wizard": "off",
+    "setup-matt-pocock-skills": "name-only",
+    "setup-pre-commit": "name-only",
+    "setup-ts-deep-modules": "name-only",
+    "git-guardrails-claude-code": "name-only",
+    "find-skills": "name-only"
+  }
+}
