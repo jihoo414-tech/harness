@@ -102,7 +102,7 @@ wayfinder 티켓은 답이 나오면 닫히고, to-tickets 티켓은 코드가 �
 ## 레포 구조
 
 ```
-.claude/        이 레포에서 작업할 때 쓰는 하네스. 외부 스킬(Matt, ponytail)은 원본 그대로 둔다.
+.claude/        이 레포에서 작업할 때 쓰는 하네스. 외부 스킬(Matt)은 원본 그대로 둔다. ponytail은 글로벌 플러그인(ponytail@ponytail)으로 쓴다.
 plugin/         내 하네스(my-harness 플러그인). 내가 만들거나 고친 스킬은 여기에 둔다.
 .claude-plugin/ plugin/을 가리키는 로컬 마켓플레이스.
 experiments/    실험 하나 = 폴더 하나. 그 폴더에서 claude를 실행한다. 필요할 때 만든다.
